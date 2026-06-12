@@ -3,30 +3,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.UI.Notifications;
 using XmlDocument = Windows.Data.Xml.Dom.XmlDocument;
-
-#if NETSTANDARD
 using System.IO;
 using System.Xml;
-#else
-using System.Diagnostics;
-using Microsoft.Toolkit.Uwp.Notifications;
-#endif
 
 namespace DesktopNotifications.Windows
 {
     public class WindowsNotificationManager : INotificationManager
     {
-        private const int LaunchNotificationWaitMs = 5_000;
         private readonly WindowsApplicationContext _applicationContext;
-        private readonly TaskCompletionSource<string>? _launchActionPromise;
         private readonly Dictionary<ToastNotification, Notification> _notifications;
         private readonly Dictionary<ScheduledToastNotification, Notification> _scheduledNotification;
-
-#if NETSTANDARD
         private readonly ToastNotifier _toastNotifier;
-#else
-        private readonly ToastNotifierCompat _toastNotifier;
-#endif
 
         /// <summary>
         /// </summary>
@@ -34,25 +21,8 @@ namespace DesktopNotifications.Windows
         public WindowsNotificationManager(WindowsApplicationContext? applicationContext = null)
         {
             _applicationContext = applicationContext ?? WindowsApplicationContext.FromCurrentProcess();
-            _launchActionPromise = new TaskCompletionSource<string>();
 
-#if !NETSTANDARD
-            if (ToastNotificationManagerCompat.WasCurrentProcessToastActivated())
-            {
-                ToastNotificationManagerCompat.OnActivated += OnAppActivated;
-
-                if (_launchActionPromise.Task.Wait(LaunchNotificationWaitMs))
-                {
-                    LaunchActionId = _launchActionPromise.Task.Result;
-                }
-            }
-#endif
-
-#if NETSTANDARD
             _toastNotifier = ToastNotificationManager.CreateToastNotifier(_applicationContext.AppUserModelId);
-#else
-            _toastNotifier = ToastNotificationManagerCompat.CreateToastNotifier();
-#endif
 
             _notifications = new Dictionary<ToastNotification, Notification>();
             _scheduledNotification = new Dictionary<ScheduledToastNotification, Notification>();
@@ -142,7 +112,6 @@ namespace DesktopNotifications.Windows
 
         private static XmlDocument GenerateXml(Notification notification)
         {
-#if NETSTANDARD
             var sw = new StringWriter();
             var xw = XmlWriter.Create(sw, new XmlWriterSettings
             {
@@ -199,37 +168,7 @@ namespace DesktopNotifications.Windows
             xmlDoc.LoadXml(xmlStr);
 
             return xmlDoc;
-
-#else
-            var builder = new ToastContentBuilder();
-
-            builder.AddText(notification.Title);
-            builder.AddText(notification.Body);
-
-            if (notification.BodyImagePath is { } img)
-            {
-                builder.AddInlineImage(new Uri($"file:///{img}"), notification.BodyImageAltText);
-            }
-
-            foreach (var (title, actionId) in notification.Buttons)
-            {
-                builder.AddButton(title, ToastActivationType.Foreground, actionId);
-            }
-
-            return builder.GetXml();
-
-#endif
         }
-
-#if !NETSTANDARD
-        private void OnAppActivated(ToastNotificationActivatedEventArgsCompat e)
-        {
-            Debug.Assert(_launchActionPromise != null);
-
-            var actionId = GetActionId(e.Argument);
-            _launchActionPromise.SetResult(actionId);
-        }
-#endif
 
         private static void ToastNotificationOnFailed(ToastNotification sender, ToastFailedEventArgs args)
         {
