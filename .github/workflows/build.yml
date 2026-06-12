@@ -71,7 +71,14 @@ jobs:
           name: nuget
           if-no-files-found: error
           retention-days: 7
-          path: ${{ env.NuGetDirectory }}/*.nupkg
+          path: ${{ env.NuGetDirectory }}/*DesktopNotifications*.nupkg
 
       - name: Push to GitHub Packages
-        run: dotnet nuget push ${{ env.NuGetDirectory }}/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+        run: |
+          $packages = Get-ChildItem -Path "${{ env.NuGetDirectory }}" -Filter *.nupkg | Where-Object {
+              $_.Name -notlike "Example.*.nupkg" -and $_.Name -notlike "Example.Avalonia.*.nupkg"
+          }
+          foreach ($package in $packages) {
+              Write-Host "正在推送: $($package.Name)"
+              dotnet nuget push $package.FullName -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+          }

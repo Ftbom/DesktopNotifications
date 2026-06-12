@@ -5,7 +5,7 @@
 		<TargetFrameworks>net10.0</TargetFrameworks>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
-		<TargetFrameworks>net10.0-windows10.0.17763.0</TargetFrameworks>
+		<TargetFrameworks>net10.0;net10.0-windows10.0.17763.0</TargetFrameworks>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -13,6 +13,7 @@
 		<LangVersion>8.0</LangVersion>
 		<Description>A cross-platform C# library for native desktop "toast" notifications.</Description>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>Ftbom.DesktopNotifications.Avalonia</PackageId>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/Ftbom/DesktopNotifications</PackageProjectUrl>
 	</PropertyGroup>
