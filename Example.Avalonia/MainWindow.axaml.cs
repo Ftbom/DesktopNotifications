@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using DesktopNotifications;
 
 namespace Example.Avalonia
@@ -76,8 +73,8 @@ namespace Example.Avalonia
 
                 var nf = new Notification
                 {
-                    Title = TitleTextBox.Text ?? TitleTextBox.Watermark,
-                    Body = BodyTextBox.Text ?? BodyTextBox.Watermark,
+                    Title = TitleTextBox.Text ?? TitleTextBox.PlaceholderText,
+                    Body = BodyTextBox.Text ?? BodyTextBox.PlaceholderText,
                     BodyImagePath = ImagePathTextBox.Text,
                     Buttons =
                     {
@@ -101,8 +98,8 @@ namespace Example.Avalonia
             {
                 var nf = new Notification
                 {
-                    Title = TitleTextBox.Text ?? TitleTextBox.Watermark,
-                    Body = BodyTextBox.Text ?? BodyTextBox.Watermark
+                    Title = TitleTextBox.Text ?? TitleTextBox.PlaceholderText,
+                    Body = BodyTextBox.Text ?? BodyTextBox.PlaceholderText
                 };
 
                 await _notificationManager.ScheduleNotification(

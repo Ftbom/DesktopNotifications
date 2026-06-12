@@ -4,7 +4,7 @@ using DesktopNotifications.Avalonia;
 
 namespace Example.Avalonia
 {
-    internal class Program
+    internal sealed class Program
     {
         public static INotificationManager NotificationManager = null!;
 
@@ -18,6 +18,7 @@ namespace Example.Avalonia
         {
             return AppBuilder.Configure<App>()
                 .UsePlatformDetect()
+                .WithInterFont()
                 .SetupDesktopNotifications(out NotificationManager!)
                 .LogToTrace();
         }

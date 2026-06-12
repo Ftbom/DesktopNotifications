@@ -8,9 +8,9 @@
         Title="Example.Avalonia">
 
     <StackPanel Margin="20" Spacing="10">
-        <TextBox Name="TitleTextBox" Watermark="Title" UseFloatingWatermark="True" />
-        <TextBox Name="BodyTextBox" Watermark="Body" UseFloatingWatermark="True" />
-        <TextBox Name="ImagePathTextBox" Watermark="Image path (optional)" UseFloatingWatermark="True" />
+        <TextBox Name="TitleTextBox" PlaceholderText="Title" UseFloatingPlaceholder="True"/>
+        <TextBox Name="BodyTextBox" PlaceholderText="Body" UseFloatingPlaceholder="True" />
+        <TextBox Name="ImagePathTextBox" PlaceholderText="Image path (optional)" UseFloatingPlaceholder="True" />
 
 		<Button Click="Show_OnClick" Content="Show Notification" />
         <Button Click="Schedule_OnClick" Content="Schedule notification (in 5 Seconds)" />
