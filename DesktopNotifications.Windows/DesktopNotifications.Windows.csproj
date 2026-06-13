@@ -18,11 +18,11 @@
 		<PackageProjectUrl>https://github.com/Ftbom/DesktopNotifications</PackageProjectUrl>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+	<ItemGroup Condition="$(TargetFramework.Contains('windows'))">
 		<Compile Remove="NullImpl_WindowsNotificationManager.cs" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(OS)' != 'Windows_NT'">
+	<ItemGroup Condition="!$(TargetFramework.Contains('windows'))">
 		<Compile Remove="ShellLink.cs" />
 		<Compile Remove="WindowsNotificationManager.cs" />
 		<Compile Remove="WindowsApplicationContext.cs" />
