@@ -2,8 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
-        Width="400" Height="500"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="550"
+        Width="400" Height="550"
         x:Class="Example.Avalonia.MainWindow"
         Title="Example.Avalonia">
 
@@ -11,6 +11,13 @@
         <TextBox Name="TitleTextBox" PlaceholderText="Title" UseFloatingPlaceholder="True"/>
         <TextBox Name="BodyTextBox" PlaceholderText="Body" UseFloatingPlaceholder="True" />
         <TextBox Name="ImagePathTextBox" PlaceholderText="Image path (optional)" UseFloatingPlaceholder="True" />
+        <ComboBox Name="LevelComboBox" SelectedIndex="0" HorizontalAlignment="Stretch">
+            <ComboBoxItem Content="Default" />
+            <ComboBoxItem Content="Success" />
+            <ComboBoxItem Content="Info" />
+            <ComboBoxItem Content="Warning" />
+            <ComboBoxItem Content="Error" />
+        </ComboBox>
 
 		<Button Click="Show_OnClick" Content="Show Notification" />
         <Button Click="Schedule_OnClick" Content="Schedule notification (in 5 Seconds)" />

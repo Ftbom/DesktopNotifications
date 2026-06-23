@@ -73,6 +73,14 @@ namespace Example.Avalonia
 
                 var nf = new Notification
                 {
+                    Level = LevelComboBox.SelectedItem switch
+                    {
+                        ComboBoxItem item when item.Content?.ToString() == "Success" => NotificationLevel.Success,
+                        ComboBoxItem item when item.Content?.ToString() == "Info" => NotificationLevel.Info,
+                        ComboBoxItem item when item.Content?.ToString() == "Warning" => NotificationLevel.Warning,
+                        ComboBoxItem item when item.Content?.ToString() == "Error" => NotificationLevel.Error,
+                        _ => null
+                    },
                     Title = TitleTextBox.Text ?? TitleTextBox.PlaceholderText,
                     Body = BodyTextBox.Text ?? BodyTextBox.PlaceholderText,
                     BodyImagePath = ImagePathTextBox.Text,
@@ -98,8 +106,17 @@ namespace Example.Avalonia
             {
                 var nf = new Notification
                 {
+                    Level = LevelComboBox.SelectedItem switch
+                    {
+                        ComboBoxItem item when item.Content?.ToString() == "Success" => NotificationLevel.Success,
+                        ComboBoxItem item when item.Content?.ToString() == "Info" => NotificationLevel.Info,
+                        ComboBoxItem item when item.Content?.ToString() == "Warning" => NotificationLevel.Warning,
+                        ComboBoxItem item when item.Content?.ToString() == "Error" => NotificationLevel.Error,
+                        _ => null
+                    },
                     Title = TitleTextBox.Text ?? TitleTextBox.PlaceholderText,
-                    Body = BodyTextBox.Text ?? BodyTextBox.PlaceholderText
+                    Body = BodyTextBox.Text ?? BodyTextBox.PlaceholderText,
+                    BodyImagePath = ImagePathTextBox.Text
                 };
 
                 await _notificationManager.ScheduleNotification(

@@ -3,6 +3,13 @@ using System.Collections.Generic;
 
 namespace DesktopNotifications
 {
+    public enum NotificationLevel
+    {
+        Info,
+        Success,
+        Warning,
+        Error
+    }
     /// <summary>
     /// </summary>
     public class Notification
@@ -11,7 +18,7 @@ namespace DesktopNotifications
         {
             Buttons = new List<(string Title, string ActionId)>();
         }
-
+        public NotificationLevel? Level { get; set; }
         public string? Title { get; set; }
 
         public string? Body { get; set; }

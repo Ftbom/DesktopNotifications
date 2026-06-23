@@ -23,6 +23,19 @@ namespace DesktopNotifications.FreeDesktop
                 { "icon", NotificationManagerCapabilities.Icon }
             };
 
+        private (string IconName, byte Urgency) GetLinuxLevelHints(NotificationLevel? level)
+        {
+            string? iconPath = IconResourceExtractor.GetExtractedIconPath(level);
+            return level switch
+            {
+                NotificationLevel.Error => (iconPath ?? "dialog-error", (byte)2),    // 2 = Critical
+                NotificationLevel.Warning => (iconPath ?? "dialog-warning", (byte)1), // 1 = Normal
+                NotificationLevel.Success => (iconPath ?? "emblem-default", (byte)1),
+                NotificationLevel.Info => (iconPath ?? "dialog-information", (byte)1),
+                _ => (_appContext.AppIcon ?? string.Empty, (byte)1)
+            };
+        }
+
         private readonly Dictionary<uint, Notification> _activeNotifications;
         private readonly FreeDesktopApplicationContext _appContext;
         private Connection? _connection;
@@ -97,14 +110,16 @@ namespace DesktopNotifications.FreeDesktop
             var duration = expirationTime - DateTimeOffset.Now;
             var actions = GenerateActions(notification);
 
+            var (iconPath, urgency) = GetLinuxLevelHints(notification.Level);
+
             var id = await _proxy!.NotifyAsync(
                 _appContext.Name,
                 0,
-                _appContext.AppIcon ?? string.Empty,
+                iconPath,
                 notification.Title ?? throw new ArgumentException(),
                 GenerateNotificationBody(notification),
                 actions.ToArray(),
-                new Dictionary<string, object> { { "urgency", 1 } },
+                new Dictionary<string, object> { { "urgency", urgency } },
                 (int?) duration?.TotalMilliseconds ?? 0
             ).ConfigureAwait(false);
 

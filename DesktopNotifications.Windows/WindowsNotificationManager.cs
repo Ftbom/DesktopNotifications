@@ -121,11 +121,22 @@ namespace DesktopNotifications.Windows
 
             xw.WriteStartElement("toast");
 
+            xw.WriteAttributeString("scenario", notification.Level == NotificationLevel.Error ? "urgent" : "default");
+
             xw.WriteStartElement("visual");
 
             xw.WriteStartElement("binding");
 
             xw.WriteAttributeString("template", "ToastGeneric");
+
+            string? iconPathToUse = IconResourceExtractor.GetExtractedIconPath(notification.Level);
+            if (!string.IsNullOrEmpty(iconPathToUse))
+            {
+                xw.WriteStartElement("image");
+                xw.WriteAttributeString("placement", "appLogoOverride");
+                xw.WriteAttributeString("src", $"file:///{iconPathToUse}");
+                xw.WriteEndElement();
+            }
 
             xw.WriteStartElement("text");
             xw.WriteString(notification.Title ?? string.Empty);

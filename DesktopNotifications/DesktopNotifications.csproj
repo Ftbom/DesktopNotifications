@@ -17,5 +17,12 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/Ftbom/DesktopNotifications</PackageProjectUrl>
 	</PropertyGroup>
+	
+	<ItemGroup>
+	  <EmbeddedResource Include="Assets\icon-error.png" />
+	  <EmbeddedResource Include="Assets\icon-info.png" />
+	  <EmbeddedResource Include="Assets\icon-success.png" />
+	  <EmbeddedResource Include="Assets\icon-warning.png" />
+	</ItemGroup>
 
 </Project>
